@@ -1,0 +1,65 @@
+* Pigshare
+
+Python client library and commandline tool for institutional Figshare.
+
+The commandline options are created dynamically from the available api-method wrapper code, which is why some of them might feel a bit clumsy.
+
+** Requirements
+
+ - python-dev package (for simplejson compilation I think)
+
+ - argparse
+ - setuptools
+ - restkit
+ - booby
+ - simplejson
+ - parinx
+ - pyclist
+ - argcomplete
+
+
+** Installation
+
+    (sudo) pip install https://github.com/UoA-eResearch/pigshare/archive/master.zip
+
+
+** Usage (commandline client)
+
+*pigshare* reads a config file $HOME/.pigshare.conf, in the format:
+
+    : [default]
+    : url = https://api.figsh.com/v2
+    : token = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+(note, this example uses the staging environment)
+
+For public read access, this is not required.
+
+Basic usage is displayed via:
+
+    : pigshare -h
+
+Command specific usage can be displayed via:
+
+    : pigshare [command] -h
+
+
+** Example calls:
+
+    : pigshare create_article --article '{"title": "Markus test", "custom_fields": {"key1": "value"}}'
+
+    : pigshare create_collection --collection '{"title": "Collection markus test", "articles": [2009074,2009075,2009084], "custom_fields": {"test1": "value1"}}'
+
+		: pigshare add_article --collection_id 2761 --article_ids [2009103,2009106]
+
+		: pigshare -o id -s ',' search_my_articles --search_term markus
+
+		: for id in `pigshare -o id list_my_articles`; do echo "$id"; pigshare add_article --collection_id 3222 --article_id "$id"; done
+
+    : pigshare update_article --id 2000077 --article '{"categories": [2]}'
+
+		: pigshare update_article --id 2000077 --article '{"custom_fields": {"field1":"value1"}}'
+
+** Usage (Library)
+
+	 TODO

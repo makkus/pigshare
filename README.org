@@ -76,7 +76,9 @@ I'd recommend trying out the command you want to run first, and checking which f
 
 *** Commonly used commands
 
-**** List articles
+**** Articles
+
+***** List articles
 
 To list all articles and display the *doi*, (internal) *id*, *title*, *url*, and *published_date* for each, issue:
 
@@ -87,7 +89,7 @@ To display a table with all articles, but only display *doi* and *title*, you ca
     : pigshare -o doi,title list_articles
 
 
-**** Read an article
+***** Read an article
 
 To display the properties of an article, use:
 
@@ -98,7 +100,7 @@ To display the doi of an article, use:
     : pigshare -o doi read_article --id [article_id]
 
 
-**** Search for articles
+***** Search for articles
 
 To list all articles matching a search string, issue:
 
@@ -109,23 +111,37 @@ To display all dois and titles of articles that match a search string:
     : pigshare -o doi,title search_articles --search_term [search_term]
 
 
+**** Collections
+
+Very similar to articles.
+
+
 *** Other random example calls:
 
+		: # create new article
     : pigshare create_article --article '{"title": "Markus test", "custom_fields": {"key1": "value"}}'
 
+		: # create new collection
     : pigshare create_collection --collection '{"title": "Collection markus test", "articles": [2009074,2009075,2009084], "custom_fields": {"test1": "value1"}}'
 
+		: # add articles to a collection
 		: pigshare add_article --collection_id 2761 --article_ids [2009103,2009106]
 
-		: pigshare -o id -s ',' search_my_articles --search_term markus
+		: # search articles that contain a search_term, display only ids, separated by ',' (useful to copy and paste into 'add_article' command)
+		: pigshare -o id -s ',' search_my_articles --search_term [search_term]
 
+		: # list all of your personal articles, and add all of them to a collection
 		: for id in `pigshare -o id list_my_articles`; do echo "$id"; pigshare add_article --collection_id 3222 --article_id "$id"; done
 
+		: # update/overwrite the title and articles connected to a collection
 		: pigshare update_collection --id 2761 --collection '{"title": "Collection markus test changed", "articles": [2009074,2009075]}'
 
+		: # update/overwrite the categories field in a collection
     : pigshare update_article --id 2000077 --article '{"categories": [2]}'
 
+		: # update/overwrite the custom_fields of a collection
 		: pigshare update_article --id 2000077 --article '{"custom_fields": {"field1":"value1"}}'
+
 
 ** Usage (Library)
 

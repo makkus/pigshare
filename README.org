@@ -40,11 +40,9 @@ The commandline options are created dynamically from the available api-method wr
     : [default]
     : url = https://api.figsh.com/v2
     : token = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    :
     : [markus]
     : url = https://api.figshare.com/v2
     : token =  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    :
     : [not_markus]
     : url = https://api.figshare.com/v2
     : token = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

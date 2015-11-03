@@ -25,6 +25,8 @@ The commandline options are created dynamically from the available api-method wr
 
 ** Usage (commandline client)
 
+*** Connection details
+
 *pigshare* reads a config file $HOME/.pigshare.conf, in the format:
 
     : [default]
@@ -32,6 +34,28 @@ The commandline options are created dynamically from the available api-method wr
     : token = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 (note, this example uses the staging environment)
+
+*pigshare* supports profiles, so you can have multiple profiles in your config file like for example:
+
+    : [default]
+    : url = https://api.figsh.com/v2
+    : token = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    :
+    : [markus]
+    : url = https://api.figshare.com/v2
+    : token =  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    :
+    : [not_markus]
+    : url = https://api.figshare.com/v2
+    : token = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Now, when you call *pigshare* with the **-p** argument, you can switch between different backends/identities:
+
+    : pigshare -p markus blahblahblah
+
+the command you chose will be using the selected connection parameters.
+
+*** General usage
 
 For public read access, this is not required.
 
@@ -43,8 +67,51 @@ Command specific usage can be displayed via:
 
     : pigshare [command] -h
 
+*** Filtering
 
-** Example calls:
+(Sub-)commands that display one or more items can be called using an output filter (the **-o** argument before the sub-command). Depending on the sub-command called only certain fields of the items are available (e.g. *list_articles* has only a subset of fields compared to *read_article*).
+
+I'd recommend trying out the command you want to run first, and checking which fields are available, then run the command again with the appropriate filter. A command to list all articles and only display the *doi* and *title* of each article would be:
+
+    : pigshare -o doi,title list_articles
+
+
+*** Commonly used commands
+
+**** List articles
+
+To list all articles and display the *doi*, (internal) *id*, *title*, *url*, and *published_date* for each, issue:
+
+    : pigshare list_articles
+
+To display a table with all articles, but only display *doi* and *title*, you can use:
+
+    : pigshare -o doi,title list_articles
+
+
+**** Read an article
+
+To display the properties of an article, use:
+
+    : pigshare read_article --id [article_id]
+
+To display the doi of an article, use:
+
+    : pigshare -o doi read_article --id [article_id]
+
+
+**** Search for articles
+
+To list all articles matching a search string, issue:
+
+    : pigshare search_articles --search_term [search_term]
+
+To display all dois and titles of articles that match a search string:
+
+    : pigshare -o doi,title search_articles --search_term [search_term]
+
+
+*** Other random example calls:
 
     : pigshare create_article --article '{"title": "Markus test", "custom_fields": {"key1": "value"}}'
 
@@ -55,6 +122,8 @@ Command specific usage can be displayed via:
 		: pigshare -o id -s ',' search_my_articles --search_term markus
 
 		: for id in `pigshare -o id list_my_articles`; do echo "$id"; pigshare add_article --collection_id 3222 --article_id "$id"; done
+
+		: pigshare update_collection --id 2761 --collection '{"title": "Collection markus test changed", "articles": [2009074,2009075]}'
 
     : pigshare update_article --id 2000077 --article '{"categories": [2]}'
 

@@ -85,15 +85,6 @@ class ArticleShort(Model):
 
         # return self.title
 
-class Articles(list):
-
-    def __init__(self, json):
-
-        list.__init__(self)
-        for a in json:
-            article = ArticleShort(**a)
-            self.append(article)
-
 
 class Category(Model):
 
@@ -329,14 +320,6 @@ class CollectionL1(Model):
     articles_count = fields.Integer()
 
 
-class Collections(list):
-
-    def __init__(self, json):
-
-        list.__init__(self)
-        for a in json:
-            collection = CollectionShort(**a)
-            self.append(collection)
 
 
 class FigshareError(Model):

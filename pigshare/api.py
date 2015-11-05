@@ -49,6 +49,21 @@ def create_fileupload_dict(fname):
     return result
 
 
+def multiply_call(function_to_call, list_of_ids):
+    '''
+    If a method is called with multiple ids, it can use this method to create a list of results, using all ids.
+    '''
+
+    result = []
+    for id in list_of_ids:
+
+        r = function_to_call(id)
+        result.append(r)
+
+    return result
+
+    
+
 API_MARKER = 'call'
 
 def is_api_method(field):
@@ -72,14 +87,17 @@ class figshare_api(Resource):
         '''Returns a list of all articles.
 
         :return: A list of articles matching the search term.
-        :rtype: Articles
+        :rtype: list
         '''
 
         response = self.get('/articles', params_dict=get_request_params())
 
         articles_json = json.loads(response.body_string())
-        articles = Articles(articles_json)
-        return articles
+        result = []
+        for a in articles_json:
+            art = ArticleShort(**a)
+            result.append(art)
+        return result
 
 
     def call_search_articles(self, search_term):
@@ -89,7 +107,7 @@ class figshare_api(Resource):
         :type search_term: str
         :param search_term: the term to search for
         :return: A list of articles matching the search term.
-        :rtype: Articles
+        :rtype: list
         '''
 
         data = get_request_params()
@@ -100,8 +118,11 @@ class figshare_api(Resource):
         response = self.post('/articles/search', payload=payload)
 
         articles_json = json.loads(response.body_string())
-        articles = Articles(articles_json)
-        return articles
+        result = []
+        for a in articles_json:
+            art = ArticleShort(**a)
+            result.append(art)
+        return result
 
 
     def call_read_article(self, id):
@@ -134,8 +155,12 @@ class figshare_api(Resource):
         response = self.get('/account/articles', headers=get_headers(token=self.token), params_dict=get_request_params())
 
         articles_json = json.loads(response.body_string())
-        articles = Articles(articles_json)
-        return articles
+
+        result = []
+        for a in articles_json:
+            art = ArticleShort(**a)
+            result.append(art)
+        return result
 
 
     def call_search_my_articles(self, search_term):
@@ -159,8 +184,11 @@ class figshare_api(Resource):
         response = self.post('/account/articles/search', payload=payload, headers=get_headers(token=self.token))
 
         articles_json = json.loads(response.body_string())
-        articles = Articles(articles_json)
-        return articles
+        result = []
+        for a in articles_json:
+            art = ArticleShort(**a)
+            result.append(art)
+        return result
 
 
     def call_create_article(self, article):
@@ -255,8 +283,12 @@ class figshare_api(Resource):
         response = self.get('/account/articles/{}/files'.format(id), headers=get_headers(token=self.token))
 
         file_json = json.loads(response.body_string())
-        files = Files(file_json)
-        return files
+
+        result = []
+        for f in file_json:
+            fi = FileShort(**f)
+            result.append(fi)
+        return result
 
 
     def call_publish_article(self, id):
@@ -286,9 +318,13 @@ class figshare_api(Resource):
         response = self.get('/collections', params_dict=get_request_params())
 
         collections_json = json.loads(response.body_string())
-        collections = Collections(collections_json)
 
-        return collections
+        result = []
+        for c in collections_json:
+            col = CollectionShort(**c)
+            result.append(col)
+        return result
+
 
 
     def call_search_collections(self, search_term):
@@ -309,9 +345,11 @@ class figshare_api(Resource):
         response = self.post('/collections/search', payload = payload)
 
         collections_json = json.loads(response.body_string())
-        collections = Collections(collections_json)
-
-        return collections
+        result = []
+        for c in collections_json:
+            col = CollectionShort(**c)
+            result.append(col)
+        return result
 
     def call_read_collection(self, id):
         '''
@@ -337,14 +375,19 @@ class figshare_api(Resource):
         :type id: int
         :param id: the collection id
         :return: a list of articles
-        :rtype: Articles
+        :rtype: list
         '''
 
         response = self.get('/collections/{}/articles'.format(id), params_dict=get_request_params())
 
         articles_json = json.loads(response.body_string())
-        articles = Articles(articles_json)
-        return articles
+        result = []
+
+        for a in articles_json:
+            art = ArticleShort(**a)
+            result.append(art)
+        return result
+
 
 
     def call_list_my_collections(self):
@@ -358,9 +401,13 @@ class figshare_api(Resource):
         response = self.get('/account/collections', params_dict=get_request_params(), headers=get_headers(token=self.token))
 
         collections_json = json.loads(response.body_string())
-        collections = Collections(collections_json)
 
-        return collections
+        result = []
+        for c in collections_json:
+            col = CollectionShort(**c)
+            result.append(col)
+        return result
+
 
     def call_read_my_collection(self, id):
         '''
@@ -392,8 +439,13 @@ class figshare_api(Resource):
         response = self.get('/account/collections/{}/articles'.format(id), headers=get_headers(token=self.token), params_dict=get_request_params())
 
         articles_json = json.loads(response.body_string())
-        articles = Articles(articles_json)
-        return articles
+
+        result = []
+        for a in articles_json:
+            art = ArticleShort(**a)
+            result.append(art)
+        return result
+
 
 
 
@@ -454,13 +506,17 @@ class figshare_api(Resource):
         :rtype: bool
         '''
 
+        if isinstance(article_ids, (int, long)):
+            article_ids = [article_ids]
+
+        # convert to ints
+        article_ids = [int(x) for x in article_ids]
         if len(article_ids) > 10:
             raise Exception("No more than 10 articles allowed.")
 
         payload = {}
         payload['articles'] = article_ids
         payload = json.dumps(payload)
-
         try:
             response = self.post('/account/collections/{}/articles'.format(collection_id), headers=get_headers(token=self.token), payload=payload)
         except Exception as e:

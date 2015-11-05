@@ -58,7 +58,7 @@ class Pigshare(object):
         self.cli.root_parser.add_argument('--output', '-o', help='Filter output format')
         self.cli.root_parser.add_argument('--separator', '-s', default='\n', help='Seperator for output, useful to create a comma-separated list of ids. Default is new-line')
 
-        self.cli.add_command(figshare_api)
+        self.cli.add_command(figshare_api, {'read_my_article':'id', 'read_my_collection':'id', 'add_article':'article_ids', 'publish_article':'id', 'read_article':'id', 'read_collection':'id', 'read_collection_articles':'id', 'read_my_collection_articles':'id', 'remove_article':'article_id', 'search_articles':'search_term', 'search_collections':'search_term'}, {'ArticleCreate': ArticleCreate, 'CollectionCreate': CollectionCreate})
 
         self.cli.parse_arguments()
 
@@ -85,56 +85,6 @@ class Pigshare(object):
             # sys.exit(0)
 
 
-    def print_output(self, result, output_format=None, separator='\n'):
-
-        # json = result.to_json(indent=2, sort_keys=True)
-
-        if isinstance(result, bool):
-            print result
-            return
-
-        if isinstance(result, (Collections, Articles)):
-            output = []
-            for item in result:
-                output.append(self.create_output_item(item, output_format))
-
-            print separator.join(output)
-
-            return
-
-        else:
-            output = self.create_output_item(result, output_format)
-            print output
-
-        # if not output_format:
-
-            # if issubclass(result.__class__, Model):
-                # pprint(dict(result))
-            # else:
-                # print result.__str__().encode('utf-8')
-
-
-            # return
-
-        # filter output
-
-
-    def create_output_item(self, item, output_format=None):
-
-        result = ""
-
-        if output_format:
-            values = []
-            for token in output_format.split(","):
-                v = getattr(item, token)
-                values.append(unicode(v).replace('\n', ' '))
-
-            result = u'\t'.join(values).encode('utf-8')
-
-        else:
-            result = pformat(dict(item))
-
-        return result
 
 def run():
     Pigshare()

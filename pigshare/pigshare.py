@@ -1,3 +1,11 @@
+# PYTHON_ARGCOMPLETE_OK
+
+from signal import signal, SIGPIPE, SIG_DFL
+
+#Ignore SIG_PIPE and don't throw exceptions on it... (http://docs.python.org/library/signal.html)
+signal(SIGPIPE,SIG_DFL)
+
+
 import inspect
 from api import figshare_api, is_api_method
 import argparse

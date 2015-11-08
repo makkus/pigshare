@@ -507,12 +507,12 @@ class figshare_api(Resource):
 
         return True
 
-    def call_add_article(self, collection_id, article_ids):
+    def call_add_article(self, id, article_ids):
         '''
         Adds one or more articles to a collection.
 
-        :type collection_id: int
-        :param collection_id: the id of the collection
+        :type id: int
+        :param id: the id of the collection
         :type article_ids: list
         :param article_ids: one or more article ids
 
@@ -532,7 +532,7 @@ class figshare_api(Resource):
         payload['articles'] = article_ids
         payload = json.dumps(payload)
         try:
-            response = self.post('/account/collections/{}/articles'.format(collection_id), headers=get_headers(token=self.token), payload=payload)
+            response = self.post('/account/collections/{}/articles'.format(id), headers=get_headers(token=self.token), payload=payload)
         except Exception as e:
             print e
             return False

@@ -4,6 +4,10 @@ Python client library and commandline tool for institutional Figshare.
 
 The commandline options are created dynamically from the available api-method wrapper code, which is why some of them might feel a bit clumsy. Also, many of the commands only support values as json-formatted strings. I might change that in the future, but it'd require more complex cli-argparse creation code and I'm not sure whether it's worth it.
 
+** Notes
+
+So far, I've only tested this on Linux.
+
 ** Requirements
 
  - python-dev package (for simplejson compilation I think)
@@ -76,8 +80,6 @@ The command you chose will be using the selected connection parameters.
 		- everything else
 
 *** General usage
-
-For public read access, this is not required.
 
 Basic usage is displayed via:
 

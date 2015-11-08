@@ -77,6 +77,7 @@ The command you chose will be using the selected connection parameters.
 
 **** Not (yet) supported
 
+    - automatically deal with the 10 item limits on some methods
 		- everything else
 
 *** General usage
@@ -165,7 +166,7 @@ Very similar to articles.
     : pigshare create_collection --collection '{"title": "Collection markus test", "articles": [2009074,2009075,2009084], "custom_fields": {"test1": "value1"}}'
 
 		: # add articles to a collection
-		: pigshare add_article --collection_id 2761 --article_ids [2009103,2009106]
+		: pigshare add_article --id 2761 --article_ids [2009103,2009106]
 
 		: # search articles that contain a search_term, display only ids, separated by ',' (useful to copy and paste into 'add_article' command)
 		: pigshare -o id -s ',' search_my_articles --search_term [search_term]

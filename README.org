@@ -73,7 +73,6 @@ the command you chose will be using the selected connection parameters.
 
 **** TODO
 
-		- adding of files to an articles (uploading)
 		- everything else
 
 *** General usage
@@ -134,15 +133,28 @@ To display all dois and titles of articles that match a search string:
     : pigshare -o doi,title search_articles --search_term [search_term]
 
 
+***** List my articles
+
+To list all of your own articles:
+
+    : pigshare list_my_articles
+
+***** To create a new article
+
+    : pigshare create_article --article '{"title": "Markus test", "custom_fields": {"key1": "value"}}'
+
+***** Upload one (or more files) for an article
+
+    : pigshare upload_new_file --id [article_id] file1 [file2 ... ...]
+
+
+
 **** Collections
 
 Very similar to articles.
 
 
 *** Other random example calls:
-
-		: # create new article
-    : pigshare create_article --article '{"title": "Markus test", "custom_fields": {"key1": "value"}}'
 
 		: # create new collection
     : pigshare create_collection --collection '{"title": "Collection markus test", "articles": [2009074,2009075,2009084], "custom_fields": {"test1": "value1"}}'

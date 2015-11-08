@@ -320,6 +320,38 @@ class CollectionL1(Model):
     articles_count = fields.Integer()
 
 
+class ArticleFile(Model):
+
+    status = fields.String()
+    is_link_only = fields.Boolean()
+    name = fields.String()
+    viewer_type = fields.String()
+    preview_state = fields.String()
+    download_url = fields.String()
+    supplied_md5 = fields.String()
+    computed_md5 = fields.String()
+    upload_token = fields.String()
+    upload_url = fields.String()
+    id = fields.Integer()
+    size = fields.Integer()
+
+class ArticleFileUploadPart(Model):
+
+    partNo = fields.Integer()
+    startOffset = fields.Integer()
+    endOffset = fields.Integer()
+    status = fields.String()
+    locked = fields.Boolean()
+
+    
+class ArticleFileUploadStatus(Model):
+
+    token = fields.String()
+    md5 = fields.String()
+    size = fields.Integer()
+    name = fields.String()
+    status = fields.String()
+    parts = fields.Collection(ArticleFileUploadPart)
 
 
 class FigshareError(Model):

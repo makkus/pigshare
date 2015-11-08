@@ -1,10 +1,12 @@
 from models import *
-from restkit import Resource
+from restkit import Resource, request
 import inspect
 from parinx import parser
 from helpers import utf8lize
 import hashlib
 import os
+import time
+from pprint import pprint
 try:
     import simplejson as json
 except ImportError:
@@ -247,10 +249,22 @@ class figshare_api(Resource):
         response = self.post('/account/articles/{}/files'.format(id), headers=get_headers(token=self.token), payload=payload)
         loc = ArticleLocation(**json.loads(response.body_string()))
 
+        response = request(loc.location, headers=get_headers(token=self.token))
+        article_file = ArticleFile(**json.loads(response.body_string()))
 
-        response = self.post(loc.location, headers=get_headers(token=self.token), payload=payload)
+        upload_url = '{0}/{1}'.format(article_file.upload_url, article_file.upload_token)
+        response = request(upload_url)
 
-        return True
+        article_file_upload_status = ArticleFileUploadStatus(**json.loads(response.body_string()))
+
+        with open(file, 'rb') as file_input:
+            for part in article_file_upload_status.parts:
+                size = part['endOffset'] - part['startOffset'] + 1
+                response = request('{0}/{1}'.format(upload_url, part.partNo), method='PUT', body=file_input.read(size))
+
+        response = request(loc.location, method='POST', headers=get_headers(token=self.token))
+        return loc
+
 
     def call_read_my_article(self, id):
         '''

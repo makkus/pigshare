@@ -93,7 +93,7 @@ Command specific usage can be displayed via:
 
 *** Filtering
 
-(Sub-)commands that display one or more items can be called using an output filter (the **-o** argument before the sub-command). Depending on the sub-command called only certain fields of the items are available (e.g. *list_articles* has only a subset of fields compared to *read_article*).
+(Sub-)commands that display one or more items can be called using an output filter (the *-o* argument before the sub-command). Depending on the sub-command called only certain fields of the items are available (e.g. *list_articles* has only a subset of fields compared to *read_article*).
 
 I'd recommend trying out the command you want to run first, and checking which fields are available, then run the command again with the appropriate filter. A command to list all articles and only display the *doi* and *title* of each article would be:
 

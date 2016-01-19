@@ -27,7 +27,9 @@ FIGSHARE_DEFINED_TYPES_DICT = {
     9: "code",
     11: "metadata"
 }
+
 # Extra validators ========================================
+
 
 class DateValidator(object):
     """This validator forces fields values to be an instance of `basestring`."""
@@ -36,6 +38,7 @@ class DateValidator(object):
     def validate(self, value):
         if not isinstance(value, basestring):
             raise errors.ValidationError('should be a string')
+
 
 class DefinedTypeValidator(object):
     """This validator forces fields values to be an instance of `basestring`."""
@@ -46,10 +49,12 @@ class DefinedTypeValidator(object):
             raise errors.ValidationError('should be a string')
 
         if value not in FIGSHARE_DEFINED_TYPES_DICT.values():
-            raise errors.ValidationError('should be one of '+str(FIGSHARE_DEFINED_TYPES_DICT.values()))
+            raise errors.ValidationError(
+                'should be one of ' + str(FIGSHARE_DEFINED_TYPES_DICT.values()))
 
 # Extra models ========================================
-        
+
+
 class Date(fields.Field):
     """:class:`Field` subclass with builtin `date` validation."""
 
@@ -61,11 +66,11 @@ class DefinedType(fields.Field):
     """:class:`Field` subclass with builtin `DefinedType` validation."""
 
     def __init__(self, *args, **kwargs):
-        super(DefinedType, self).__init__(DefinedTypeValidator(), *args, **kwargs)
+        super(DefinedType, self).__init__(
+            DefinedTypeValidator(), *args, **kwargs)
 
 
-
-# Models ========================================    
+# Models ========================================
 class CustomField(Model):
 
     name = fields.String(required=True)
@@ -83,7 +88,7 @@ class ArticleShort(Model):
 
     # def __str__(self):
 
-        # return self.title
+    # return self.title
 
 
 class Category(Model):
@@ -91,11 +96,13 @@ class Category(Model):
     id = fields.Integer(required=True)
     title = fields.String(required=True)
 
+
 class License(Model):
 
     name = fields.Integer(required=True)
     value = fields.String(required=True)
     url = fields.String()
+
 
 class AuthorCreate(Model):
 
@@ -105,17 +112,16 @@ class AuthorCreate(Model):
 
 class ArticleCreate(Model):
 
-    title = fields.String()
+    title = fields.String(required=True)
     description = fields.String()
     tags = fields.Collection(fields.String)
     references = fields.Collection(fields.String)
     categories = fields.Collection(fields.Integer)
     authors = fields.Collection(AuthorCreate)
-    custom_fields = fields.Field()
+    # custom_fields = fields.Field()
     defined_type = DefinedType()
     funding = fields.String()
     license = fields.String()
-
 
 
 class ArticleL1(Model):
@@ -152,12 +158,13 @@ class ArticleL1(Model):
     embargo_reason = fields.String()
     references = fields.Collection(fields.String)
 
-    
+
 class FileShort(Model):
 
     id = fields.Integer(required=True)
     name = fields.String(required=True)
     size = fields.Integer()
+
 
 class Files(list):
 
@@ -167,6 +174,7 @@ class Files(list):
         for a in json:
             f = FileShort(**a)
             self.append(f)
+
 
 class FileL1(Model):
 
@@ -184,6 +192,7 @@ class FileL1(Model):
     supplied_md5 = fields.String()
     computed_md5 = fields.String()
 
+
 class Author(Model):
 
     id = fields.Integer(required=True)
@@ -197,9 +206,9 @@ class ArticleVersion(Model):
     version = fields.Integer()
     url = fields.String()
 
-    
+
 class ArticleEmbargo(Model):
-    
+
     is_embargoed = fields.Integer()
     embargo_date = Date()
     embargo_type = fields.String()
@@ -210,6 +219,7 @@ class ArticleConfidentiality(Model):
 
     is_confidential = fields.Boolean()
     reason = fields.String()
+
 
 class ArticleL2(Model):
 
@@ -245,12 +255,12 @@ class ArticleL2(Model):
     embargo_reason = fields.String()
     references = fields.Collection(fields.String)
 
-
     files = fields.Collection(FileShort)
     authors = fields.Collection(Author)
     custom_fields = fields.Collection(CustomField)
 
     figshare_url = fields.String()
+
 
 class ArticleLocation(Model):
 
@@ -335,6 +345,7 @@ class ArticleFile(Model):
     id = fields.Integer()
     size = fields.Integer()
 
+
 class ArticleFileUploadPart(Model):
 
     partNo = fields.Integer()
@@ -343,7 +354,7 @@ class ArticleFileUploadPart(Model):
     status = fields.String()
     locked = fields.Boolean()
 
-    
+
 class ArticleFileUploadStatus(Model):
 
     token = fields.String()

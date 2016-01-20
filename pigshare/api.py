@@ -4,7 +4,7 @@ import inspect
 import hashlib
 import os
 import caching
-from input_helpers import create_article, create_author
+from input_helpers import create_article, create_collection
 try:
     import simplejson as json
 except ImportError:
@@ -77,10 +77,11 @@ def is_api_method(field):
 # API-Wrapper classes ===================================
 class figshare_api(Resource):
 
-    def __init__(self, url=FIGSHARE_BASE_URL, token=None, **kwargs):
+    def __init__(self, url=FIGSHARE_BASE_URL, token=None, verbose=False, **kwargs):
 
         self.url = url
         self.token = token
+        self.verbose = verbose
         super(figshare_api, self).__init__(self.url)
 
     def call_list_articles(self):
@@ -208,6 +209,15 @@ class figshare_api(Resource):
             article = create_article(api=self)
 
         payload = article.to_json()
+
+        if self.verbose:
+            print
+            print "--------------------"
+            print "Generated json:"
+            print
+            print payload
+            print "--------------------"
+            print
 
         response = self.post(path='/account/articles',
                              payload=payload, headers=get_headers(token=self.token))
@@ -492,11 +502,18 @@ class figshare_api(Resource):
         '''
 
         if not collection:
-            fields = ['title', 'description',
-                      'categories', 'authors', 'name']
-            collection = query_for_model(CollectionCreate, fields)
+            collection = create_collection(api=self)
 
         payload = collection.to_json()
+
+        if self.verbose:
+            print
+            print "--------------------"
+            print "Generated json:"
+            print
+            print payload
+            print "--------------------"
+            print
 
         response = self.post(
             '/account/collections', headers=get_headers(token=self.token), payload=payload)
@@ -643,5 +660,37 @@ class figshare_api(Resource):
 
             col = Category(**c)
             result.append(col)
+
+        return result
+
+    def call_list_licenses(self, filter=None):
+        '''
+        Lists all licenses.
+
+        If a filter is provided, it'll filter the results using a simple, case-insensitive string match.
+        If the filter contains at least one uppercase letter, the match is case-sensitive.
+
+        :type filter: str
+        :param filter: a string to filter the license names
+        :return: a list of all licenses
+        :rtype: list
+        '''
+
+        response = self.get('/licenses')
+
+        licenses_json = json.loads(response.body_string())
+
+        result = []
+        for c in sorted(licenses_json, key=lambda lic: lic['value']):
+            if filter:
+                if filter.islower():
+                    if filter not in c['title'].lower():
+                        continue
+                else:
+                    if filter not in c['title']:
+                        continue
+
+            lic = License(**c)
+            result.append(lic)
 
         return result

@@ -65,6 +65,8 @@ class Pigshare(object):
             '--profile', '-p', help='Profile to use (profile must be defined in ~/.pigshare.conf), takes precedence over --url and --token config')
 
         self.cli.root_parser.add_argument(
+            '--verbose', '-v', help='Verbose output, for debugging/displaying generated json', action='store_true')
+        self.cli.root_parser.add_argument(
             '--output', '-o', help='Filter output format')
         self.cli.root_parser.add_argument(
             '--separator', '-s', default='\n', help='Seperator for output, useful to create a comma-separated list of ids. Default is new-line')

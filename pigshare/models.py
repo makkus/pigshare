@@ -118,10 +118,10 @@ class ArticleCreate(Model):
     references = fields.Collection(fields.String)
     categories = fields.Collection(fields.Integer)
     authors = fields.Collection(AuthorCreate)
-    # custom_fields = fields.Field()
+    custom_fields = fields.Field()
     defined_type = DefinedType()
     funding = fields.String()
-    license = fields.String()
+    license = fields.Integer()
 
 
 class ArticleL1(Model):
@@ -269,7 +269,7 @@ class ArticleLocation(Model):
 
 class CollectionCreate(Model):
 
-    title = fields.String()
+    title = fields.String(required=True)
     description = fields.String()
     doi = fields.String()
     articles = fields.Collection(fields.Integer)

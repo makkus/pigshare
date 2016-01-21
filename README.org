@@ -79,6 +79,7 @@ The command you chose will be using the selected connection parameters.
 
 **** Not (yet) supported
 
+    - queries with more than 1000 results, only the first 1000 results are displayed
     - automatically deal with the 10 item limits on some methods
 		- everything else
 
@@ -92,6 +93,16 @@ Command specific usage can be displayed via:
 
     : pigshare [command] -h
 
+*** Interactive input
+
+Some of the commands offer interactive input (e.g. create_article, edit_article, create_collection, ...). If you choose to use that, you can get help on any particular field by typing '?' as value. Some fields support a more advanced help functionality:
+
+ - *categories*: '?' lists all available categories along with their internal figshare id (which you need to provide as input), '? [search_term]' lets you filter this list with the provided search term
+ - *authors*: '?' lists all authors and their internal ids (always use the latter if you know it) that /pigshare/ knows about (authors that came up in past queries, so this is not a comprehensible list, if you can't find the author you want, try to find it via the web-interface)
+ - *licenses*: '?' lists all licenses and their id, '? search_term' filters the result
+ - *defined_type*: '?' lists the available and valid article types
+
+Some fields support multiple values (list input). If that's the case, /pigshare/ will tell you about it, and let you input the single items one after another. Once you are finished, just press 'enter' on an empty field.
 
 *** Filtering of output fields
 

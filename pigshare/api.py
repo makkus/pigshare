@@ -4,7 +4,7 @@ import inspect
 import hashlib
 import os
 import caching
-from input_helpers import create_article, create_collection
+from input_helpers import create_article, create_collection, edit_article, edit_collection
 try:
     import simplejson as json
 except ImportError:
@@ -83,6 +83,29 @@ class figshare_api(Resource):
         self.token = token
         self.verbose = verbose
         super(figshare_api, self).__init__(self.url)
+
+    def call_create_json(self, model):
+        '''
+        Creates a json string by interactively asking the user questions about field values.
+
+        :type model: str
+        :param model: the model type to create json for (one of: article, collection)
+        :return: the initiated model
+        :rtype: Model
+        '''
+
+        if model == 'article':
+            result = create_article(api=self)
+
+        elif model == 'collection':
+            result = create_collection(api=self)
+        else:
+            raise Exception("Model type '{}' not supported".format(model))
+
+        print
+        print "Result json for {}:".format(model)
+        print
+        return result
 
     def call_list_articles(self):
         '''Returns a list of all articles.
@@ -231,13 +254,29 @@ class figshare_api(Resource):
 
         :type id: int
         :param id: the id of the article to udpate
-        :type article:  ArticleCreate
-        :param article: the article to update
+        :type article:  str
+        :param article: the article details to update
 
         :return: the link to the article
         :rtype: str
         '''
-        payload = article.to_json()
+
+        if not article:
+            article_dict = edit_article(id, api=self)
+
+        else:
+            article_dict = json.loads(article)
+
+        payload = json.dumps(article_dict)
+
+        if self.verbose:
+            print
+            print "--------------------"
+            print "Generated json:"
+            print
+            print payload
+            print "--------------------"
+            print
 
         try:
             response = self.put('/account/articles/{}'.format(id),
@@ -246,7 +285,7 @@ class figshare_api(Resource):
             print e
             return False
 
-        return True
+        return self.call_read_my_article(id)
 
     def call_upload_new_file(self, id, file):
         '''
@@ -527,14 +566,28 @@ class figshare_api(Resource):
 
         :type id: int
         :param id: the id of the collection to update
-        :type collection: CollectionCreate
+        :type collection: str
         :param collection: the collection to create
 
         :return: the link to the new collection
         :rtype: str
         '''
 
-        payload = collection.to_json()
+        if not collection:
+            collection_dict = edit_collection(id, api=self)
+        else:
+            collection_dict = json.loads(collection)
+
+        payload = json.dumps(collection_dict)
+
+        if self.verbose:
+            print
+            print "--------------------"
+            print "Generated json:"
+            print
+            print payload
+            print "--------------------"
+            print
 
         try:
             response = self.put('/account/collections/{}'.format(id),
@@ -545,7 +598,7 @@ class figshare_api(Resource):
 
         # print "XXX"+str(response.body_string())
 
-        return True
+        return self.call_read_my_collection(id)
 
     def call_add_article(self, id, article_ids):
         '''

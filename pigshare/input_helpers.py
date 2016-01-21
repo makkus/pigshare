@@ -1,5 +1,5 @@
 from models import *
-from pyclist.model_helpers import ask_details_for_type, MODEL_MAP, parse_for_help
+from pyclist.model_helpers import ask_details_for_type, MODEL_MAP, parse_for_help, edit_details_for_type
 import caching
 import booby
 
@@ -159,7 +159,7 @@ def create_articles_help_func(api):
             articles = api.call_list_articles()
 
         for a in articles:
-            print u"{}. {}".format(a.id, a.title)
+            print u"{} - {}".format(a.id, a.title)
 
     return articles_help
 
@@ -221,6 +221,24 @@ def create_article(details=None, api=None):
         raise Exception("Can't convert to ArticleCreate object.")
 
     return article
+
+
+def edit_collection(id, api=None):
+
+    # load current collection
+    old = api.call_read_my_collection(id)
+    help_map = create_collection_help_map(api)
+
+    return edit_details_for_type(CollectionCreate, old, help_map)
+
+
+def edit_article(id, api=None):
+
+    # load current article
+    old = api.call_read_my_article(id)
+    help_map = create_article_help_map(api)
+
+    return edit_details_for_type(ArticleCreate, old, help_map)
 
 
 MODEL_MAP[AuthorCreate] = create_author

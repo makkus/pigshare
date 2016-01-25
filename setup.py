@@ -31,7 +31,7 @@ test_requirements = [
 
 setup(
     name='pigshare',
-    version='0.2',
+    version='0.3',
     description="Python client for Figshare",
     long_description=readme + '\n\n' + history,
     author="Markus Binsteiner",

@@ -382,6 +382,22 @@ class figshare_api(Resource):
         loc = ArticleLocation(**json.loads(response.body_string()))
         return loc
 
+    def call_publish_collection(self, id):
+        '''
+        Publish a collection.
+
+        :type id: int
+        :param id: the collection id
+        :return: the link to the collection
+        :rtype: str
+        '''
+
+        response = self.post(
+            '/account/collections/{}/publish'.format(id), headers=get_headers(token=self.token))
+
+        loc = ArticleLocation(**json.loads(response.body_string()))
+        return loc
+
     def call_list_collections(self):
         '''
         Lists all publicly available collections.

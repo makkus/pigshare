@@ -181,13 +181,13 @@ Very similar to articles.
 
 **** Reorder articles in collections
 
-Because of how Figshare works at the moment (collections are sorted by timestamp), the easiest way to change the order of articles within a collection is to 're-publish' an already published article. Usually that doesn't result in a new DOI for that article (which would be bad).
+Because of how Figshare works (collections are sorted by the order they were added to the collection), the easiest way to change the order of articles within a collection is to remove all articles from a collection, then add them in the right order, and re-publish the collection again.
 
 So, if you want to order the articles alphabetically for example, you could do it this way:
 
  - first, find the list of article ids
 
-    : $ pigshare -o title,id -p martin search_my_articles --search_term ISSP
+    : $ pigshare -o title,id search_my_articles --search_term ISSP
     : ISSP1991: Religion I	2000910
     : ISSP1992: Social Inequality II	2000913
     : ISSP1993: Environment I	2000916
@@ -209,9 +209,14 @@ So, if you want to order the articles alphabetically for example, you could do i
     : ISSP2009: Social Inequality IV	2000967
     : ISSP2010: Environment III	2000970
 
- - then, 'touch' (publish) the articles in the right (reverse) order
+ - then, remove and re-add all articles (at the moment, adding more than 10 elements doesn't work, so you'll have to do that in batches)
 
-    : pigshare -p martin publish_article 2000970 2000967 2000964 2000961 2000958 2000955 2000952 2000949 2000946 2000943 2000940 2000937 2000934 2000928 2000925 2000922 2000919 2000916 2000913 2000910
+    : pigshare remove_article --collection 2118 2000970 2000967 2000964 2000961 2000958 2000955 2000952 2000949 2000946 2000943 2000940 2000937 2000934 2000928 2000925 2000922 2000919 2000916 2000913 2000910
+    : pigshare add_article --collection 2118 2000970 2000967 2000964 2000961 2000958 2000955 2000952 2000949 2000946 2000943 2000940 2000937 2000934 2000928 2000925 2000922 2000919 2000916 2000913 2000910
+
+ - the, publish the collection
+
+    : pigshare publish_collection 2118
 
  - check the webfrontend whether it worked by refreshing the collections page
 

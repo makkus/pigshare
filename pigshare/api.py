@@ -515,13 +515,14 @@ class figshare_api(Resource):
                             headers=get_headers(token=self.token))
 
         col_dict = json.loads(response.body_string())
+
         col = CollectionL1(**col_dict)
+        print col
 
         # author caching
         for au in col.authors:
             caching.add_author(au.id, au.full_name)
 
-        return col
         return col
 
     def call_read_my_collection_articles(self, id):
@@ -645,9 +646,9 @@ class figshare_api(Resource):
                                  headers=get_headers(token=self.token), payload=payload)
         except Exception as e:
             print e
-            return False
+            return {"success": False}
 
-        return True
+        return {"success": True}
 
     def call_replace_articles(self, collection_id, article_ids):
         '''
@@ -674,9 +675,9 @@ class figshare_api(Resource):
                 collection_id), headers=get_headers(token=self.token), payload=payload)
         except Exception as e:
             print e
-            return False
+            return {"success": False}
 
-        return True
+        return {"success": True}
 
     def call_remove_article(self, collection_id, article_id):
         '''
@@ -696,9 +697,9 @@ class figshare_api(Resource):
                 collection_id, article_id), headers=get_headers(token=self.token))
         except Exception as e:
             print e
-            return False
+            return {"success":False}
 
-        return True
+        return {"success":True}
 
     def call_list_categories(self, filter=None):
         '''

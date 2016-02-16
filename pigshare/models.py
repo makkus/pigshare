@@ -308,6 +308,7 @@ class CollectionL1(Model):
     id = fields.Integer()
     published_date = Date()
 
+    group_resource_id = fields.String()
     resource_id = fields.String()
     resource_doi = fields.String()
     resource_title = fields.String()

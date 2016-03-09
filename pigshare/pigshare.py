@@ -72,7 +72,7 @@ class Pigshare(object):
             '--separator', '-s', default='\n', help='Seperator for output, useful to create a comma-separated list of ids. Default is new-line')
 
         self.cli.add_command(figshare_api, {'read_my_article': 'id', 'read_my_collection': 'id', 'add_article': 'article_ids', 'publish_article': 'id', 'read_article': 'id', 'read_collection': 'id', 'read_collection_articles': 'id',
-                                            'read_my_collection_articles': 'id', 'remove_article': 'article_id', 'search_articles': 'search_term', 'search_collections': 'search_term', 'upload_new_file': 'file'}, {'ArticleCreate': create_article, 'CollectionCreate': CollectionCreate})
+                                            'read_my_collection_articles': 'id', 'remove_article': 'article_id', 'search_articles': 'search_term', 'search_collections': 'search_term', 'upload_new_file': 'file', 'delete_article': 'article_id'}, {'ArticleCreate': create_article, 'CollectionCreate': CollectionCreate})
 
         self.cli.parse_arguments()
 

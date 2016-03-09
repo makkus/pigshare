@@ -679,6 +679,27 @@ class figshare_api(Resource):
 
         return {"success": True}
 
+    def call_delete_article(self, article_id):
+        '''
+        Deletes an article (that is not published yet).
+
+        :type article_id: int
+        :param article_id: the id of the article to delete
+        :return: whether the operation succeeded
+        :rtype: bool
+        '''
+
+        try:
+            response = self.delete('/account/articles/{}'.format(
+                article_id), headers=get_headers(token=self.token))
+        except Exception as e:
+            print e
+            return {"success": False}
+
+        return {"success": True}
+
+
+
     def call_remove_article(self, collection_id, article_id):
         '''
         Removes one or more articles from a collection.
@@ -697,9 +718,9 @@ class figshare_api(Resource):
                 collection_id, article_id), headers=get_headers(token=self.token))
         except Exception as e:
             print e
-            return {"success":False}
+            return {"success": False}
 
-        return {"success":True}
+        return {"success": True}
 
     def call_list_categories(self, filter=None):
         '''

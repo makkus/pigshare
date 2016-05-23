@@ -306,8 +306,9 @@ class figshare_api(Resource):
         response = request(loc.location, headers=get_headers(token=self.token))
         article_file = ArticleFile(**json.loads(response.body_string()))
 
-        upload_url = '{0}/{1}'.format(article_file.upload_url,
-                                      article_file.upload_token)
+        # upload_url = '{0}/{1}'.format(article_file.upload_url,
+                                      # article_file.upload_token)
+        upload_url = article_file.upload_url
         response = request(upload_url)
 
         article_file_upload_status = ArticleFileUploadStatus(

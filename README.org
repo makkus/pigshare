@@ -273,10 +273,8 @@ Write your code (depending on which methods you intend to use you'll have to inc
 
     : # -*- coding: utf-8 -*-
     : from pigshare.api import figshare_api
-    :
     : api = figshare_api(url="https://api.figshare.com/v2", token="xxx")
     : result = api.call_list_my_articles()
-    :
     : print result
 
 Run your code

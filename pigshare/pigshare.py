@@ -10,6 +10,10 @@ signal(SIGPIPE, SIG_DFL)
 
 
 from api import figshare_api
+from stats_api import figshare_stats_api as stats_api
+from stats_api import STATS_API_ID_ARG_MAP
+from api import API_ARG_MAP
+
 import os
 import ConfigParser
 import logging
@@ -26,7 +30,7 @@ CONF_HOME = os.path.expanduser('~/.' + CONF_FILENAME)
 class PigshareConfig(object):
 
     def __init__(self):
-        self.config = ConfigParser.SafeConfigParser()
+        self.config = ConfigParser.SafeConfigParser({'token': None, 'url': FIGSHARE_BASE_URL, 'institution': None, 'stats_token': None})
 
         try:
             user = os.environ['SUDO_USER']
@@ -65,25 +69,37 @@ class Pigshare(object):
             '--profile', '-p', help='Profile to use (profile must be defined in ~/.pigshare.conf), takes precedence over --url and --token config')
 
         self.cli.root_parser.add_argument(
+            '--institution', '-i', help='The institution, necessary for some of the stats lookups')
+
+        self.cli.root_parser.add_argument(
             '--verbose', '-v', help='Verbose output, for debugging/displaying generated json', action='store_true')
         self.cli.root_parser.add_argument(
             '--output', '-o', help='Filter output format')
         self.cli.root_parser.add_argument(
             '--separator', '-s', default='\n', help='Seperator for output, useful to create a comma-separated list of ids. Default is new-line')
 
-        self.cli.add_command(figshare_api, {'read_my_article': 'id', 'read_my_collection': 'id', 'add_article': 'article_ids', 'publish_article': 'id', 'read_article': 'id', 'read_collection': 'id', 'read_collection_articles': 'id',
-                                            'read_my_collection_articles': 'id', 'remove_article': 'article_id', 'search_articles': 'search_term', 'search_collections': 'search_term', 'upload_new_file': 'file', 'delete_article': 'article_id'}, {'ArticleCreate': create_article, 'CollectionCreate': CollectionCreate})
+        self.cli.add_command(figshare_api, API_ARG_MAP, {'ArticleCreate': create_article, 'CollectionCreate': CollectionCreate})
+
+        self.cli.add_command(stats_api, STATS_API_ID_ARG_MAP)
 
         self.cli.parse_arguments()
 
         self.url = self.cli.namespace.url
         self.token = self.cli.namespace.token
+        self.institution = self.cli.namespace.institution
 
         if self.cli.namespace.profile:
             self.cli.parameters['url'] = self.config.config.get(
                 self.cli.namespace.profile, 'url')
             self.cli.parameters['token'] = self.config.config.get(
                 self.cli.namespace.profile, 'token')
+            self.cli.parameters['stats_token'] = self.config.config.get(
+                self.cli.namespace.profile, 'stats_token')
+            self.cli.parameters['institution'] = self.config.config.get(
+                self.cli.namespace.profile, 'institution')
+
+        if self.institution:
+            self.cli.parameters['institution'] = self.institution
 
         self.cli.execute()
 

@@ -77,6 +77,7 @@ The command you chose will be using the selected connection parameters.
     - listing of categories and their ids
 		- listing of licenses and their ids
     - publishing of articles and collections
+    - initial support for getting statistics for articles/collections/authors (not 100% yet)
 
 **** Not (yet) supported
 
@@ -248,4 +249,37 @@ Be aware that if an article got a new version since it was added to a collection
 
 ** Usage (Library)
 
-	 TODO
+Create your python project, e.g. using [[https://github.com/audreyr/cookiecutter][cookiecutter]]:
+
+    cookiecutter https://github.com/audreyr/cookiecutter-pypackage
+
+
+Create a virtualenv:
+
+    cd <project_dir>
+    mkvirtualenv pigshare_example
+
+Edit /setup.py/ to include pigshare requirement:
+
+    requirements = [
+        "pigshare"
+    ]
+
+Setup dev environment:
+
+    python setup.py develop
+
+Write your code (depending on which methods you intend to use you'll have to include auth token or not), e.g.:
+
+    # -*- coding: utf-8 -*-
+    from pigshare.api import figshare_api
+
+    api = figshare_api(url="https://api.figshare.com/v2", token="xxx")
+
+    result = api.call_list_my_articles()
+
+    print result
+
+Run your code
+
+    python pigshare_example/pigshare_example.py

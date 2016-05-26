@@ -251,35 +251,35 @@ Be aware that if an article got a new version since it was added to a collection
 
 Create your python project, e.g. using [[https://github.com/audreyr/cookiecutter][cookiecutter]]:
 
-    cookiecutter https://github.com/audreyr/cookiecutter-pypackage
+    : cookiecutter https://github.com/audreyr/cookiecutter-pypackage
 
 
 Create a virtualenv:
 
-    cd <project_dir>
-    mkvirtualenv pigshare_example
+    : cd <project_dir>
+    : mkvirtualenv pigshare_example
 
 Edit /setup.py/ to include pigshare requirement:
 
-    requirements = [
-        "pigshare"
-    ]
+    : requirements = [
+    :     "pigshare"
+    : ]
 
 Setup dev environment:
 
-    python setup.py develop
+    : python setup.py develop
 
 Write your code (depending on which methods you intend to use you'll have to include auth token or not), e.g.:
 
-    # -*- coding: utf-8 -*-
-    from pigshare.api import figshare_api
+    : # -*- coding: utf-8 -*-
+    : from pigshare.api import figshare_api
 
-    api = figshare_api(url="https://api.figshare.com/v2", token="xxx")
+    : api = figshare_api(url="https://api.figshare.com/v2", token="xxx")
 
-    result = api.call_list_my_articles()
+    : result = api.call_list_my_articles()
 
-    print result
+    : print result
 
 Run your code
 
-    python pigshare_example/pigshare_example.py
+    : python pigshare_example/pigshare_example.py

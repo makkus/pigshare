@@ -1,6 +1,6 @@
 # [Changelog](https://github.com/makkus/pigshare/releases)
 
-## [0.5.0](https://github.com/makkus/pigshare/compare/0.4.0...0.5.0)
+## [0.5.0](https://github.com/makkus/pigshare/compare/0.1.0...0.5.0)
 
 * [4e7ba81](https://github.com/makkus/pigshare/commit/4e7ba81) Deployment changes.
 * [79c2a2c](https://github.com/makkus/pigshare/commit/79c2a2c) Updated data models after figshare api update.

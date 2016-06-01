@@ -199,6 +199,7 @@ class Author(Model):
     full_name = fields.String(required=True)
     is_active = fields.Boolean()
     url_name = fields.String()
+    orcid_id = fields.String()
 
 
 class ArticleVersion(Model):
@@ -261,6 +262,9 @@ class ArticleL2(Model):
 
     figshare_url = fields.String()
 
+    resource_doi = fields.String()
+    resource_name = fields.String()
+    resource_title = fields.String()
 
 class ArticleLocation(Model):
 

@@ -1,12 +1,12 @@
-#!/usr/bin/env python
+3#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
-
+from setuptools import setup
+import io
+import re
+init_py = io.open('pigshare/__init__.py').read()
+metadata = dict(re.findall("__([a-z]+)__ = '([^']+)'", init_py))
+metadata['doc'] = re.findall('"""(.+)"""', init_py)[0]
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -31,12 +31,11 @@ test_requirements = [
 
 setup(
     name='pigshare',
-    version='0.4.0',
-    description="Python client for Figshare",
-    long_description=readme + '\n\n' + history,
-    author="Markus Binsteiner",
-    author_email='makkus@gmail.com',
-    url='https://github.com/UoA-eResearch/pigshare',
+    version=metadata['version'],
+    description=metadata['doc'],
+    author=metadata['author'],
+    author_email=metadata['email'],
+    url=metadata['url'],
     packages=[
         'pigshare',
     ],

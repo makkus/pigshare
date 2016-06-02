@@ -316,6 +316,9 @@ Be aware that if an article got a new version since it was added to a collection
 		: # update/overwrite the custom_fields of a collection
 		: pigshare update_article --id 2000077 --article '{"custom_fields": {"field1":"value1"}}'
 
+    : # find all article ids of an institution
+    : pigshare -o id list_instiaution_articles --inst_id 12
+
 
 ** Usage (Library)
 

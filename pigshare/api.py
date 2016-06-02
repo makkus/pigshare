@@ -34,7 +34,6 @@ def get_headers(token=None):
 def get_request_params(params={}, limit=DEFAULT_LIMIT):
 
     params['limit'] = limit
-
     return params
 
 
@@ -125,6 +124,30 @@ class figshare_api(Resource):
             art = ArticleShort(**a)
             result.append(art)
         return result
+
+    def call_list_institution_articles(self, inst_id):
+        '''Returns a list of all articles.
+
+        :type inst_id: int
+        :param inst_id: internal figshare id for institution
+        :return: A list of articles matching the search term.
+        :rtype: list
+        '''
+
+        data = get_request_params()
+        data['institution'] = inst_id
+
+        payload = json.dumps(data)
+
+        response = self.post('/articles/search', payload=payload)
+
+        articles_json = json.loads(response.body_string())
+        result = []
+        for a in articles_json:
+            art = ArticleShort(**a)
+            result.append(art)
+        return result
+
 
     def call_search_articles(self, search_term):
         '''

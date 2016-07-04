@@ -51,11 +51,6 @@ class PigshareConfig(object):
         except (ConfigParser.NoSectionError, ConfigParser.NoOptionError) as e:
             self.figshare_token = None
 
-        try:
-            self.figshare_stats_token = self.config.get('default', 'stats_token')
-        except (ConfigParser.NoSectionError, ConfigParser.NoOptionError) as e:
-            self.figshare_token = None
-
 
 class Pigshare(object):
 
@@ -69,8 +64,6 @@ class Pigshare(object):
             '--url', '-u', help='Figshare base url', default=self.config.figshare_url)
         self.cli.root_parser.add_argument(
             '--token', '-t', help='Token to connect to figshare', default=self.config.figshare_token)
-        self.cli.root_parser.add_argument(
-            '--stats_token', help='Token to connect to figshare stats api', default=self.config.figshare_stats_token)
 
         self.cli.root_parser.add_argument(
             '--profile', '-p', help='Profile to use (profile must be defined in ~/.pigshare.conf), takes precedence over --url and --token config')
@@ -94,7 +87,6 @@ class Pigshare(object):
         self.url = self.cli.namespace.url
         self.token = self.cli.namespace.token
         self.institution = self.cli.namespace.institution
-        self.stats_token = self.cli.namespace.stats_token
 
         if self.cli.namespace.profile:
             self.cli.parameters['url'] = self.config.config.get(

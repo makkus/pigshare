@@ -134,6 +134,20 @@ Not (yet) supported
    displayed
 -  automatically deal with the 10 item limits on some methods
 -  everything else
+-  caching of (article) data
+
+Notes
+^^^^^
+
+-  I've written this mostly to get data out of figshare, not to put data
+   in, so the functions related to that might need some more work
+-  overall, this thing should be still considered somewhat alpha stage,
+   so use with that in mind
+-  error handling is pretty much non-existent yet
+-  only tested on Linux, so might not work on Mac or Windows
+-  I've used this only with the institutional version of figshare, I
+   might do some tests with the personal one later on, but haven't done
+   so, so no idea whether it works.
 
 General usage
 ~~~~~~~~~~~~~
@@ -460,6 +474,11 @@ Other random example calls:
 
     # update/overwrite the custom_fields of a collection
     pigshare update_article --id 2000077 --article '{"custom_fields": {"field1":"value1"}}'
+
+.. code:: example
+
+    # find all article ids of an institution
+    pigshare -o id list_instiaution_articles --inst_id 12
 
 Usage (Library)
 ---------------

@@ -51,10 +51,10 @@ So far, I've only tested this on Linux.
 /pigshare/ supports profiles, so you can have multiple profiles in your config file like for example:
 
     : [default]
-    : url = https://api.figshare.com/v2
-    : token = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    : [staging_backend]
     : url = https://api.figsh.com/v2
+    : token = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    : [markus]
+    : url = https://api.figshare.com/v2
     : token =  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     : [not_markus_but_somebody_else]
     : url = https://api.figshare.com/v2
@@ -94,7 +94,15 @@ The command you chose will be using the selected connection parameters.
 
     - queries with more than 1000 results, only the first 1000 results are displayed
     - automatically deal with the 10 item limits on some methods
-		- everything else
+    - everything else
+    - caching of (article) data
+
+**** Notes
+    - I've written this mostly to get data out of figshare, not to put data in, so the functions related to that might need some more work
+    - overall, this thing should be still considered somewhat alpha stage, so use with that in mind
+    - error handling is pretty much non-existent yet
+    - only tested on Linux, so might not work on Mac or Windows
+    - I've used this only with the institutional version of figshare, I might do some tests with the personal one later on, but haven't done so, so no idea whether it works.
 
 *** General usage
 
